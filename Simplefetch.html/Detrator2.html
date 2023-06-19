@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container {
+            display:grid;
+            grid-template-columns: repeat(4,1fr);
+            grid-template-rows: auto;
+            gap:20px;
+            text-align:center;
+            justify-content:center;
+        } 
+
+        #container >div>img {
+            text-align:center;
+            width:100px;
+            box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+           
+
+        }
+        #container > div {
+            text-align:center;
+            box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+
+        }
+    #container  h3{
+        text-align:justify;
+        margin:20px 15px;
+
+    }
+    input {
+        padding:10px 20px;
+        width:150px;
+        cursor: pointer;
+        
+
+    }
+    input:hover{
+        background-color: aqua;
+        color:rgb(255, 0, 0)
+    }
+
+    </style>
+</head>
+<body>
+    <input oninput="search()" type="text" placeholder="search products"/>
+    <div id="container"></div>
+</body>
+</html>
+<script>
+    let bag=[];
+    let url ="https://fakestoreapi.com/products";
+    fetch(url)
+    .then((res)=>res.json())
+    .then((data)=>{
+        
+        bag=data;
+        console.log(data);
+        displayCard(data);
+    });
+    function search(){
+       let e= document.querySelector("input").value;
+       console.log(e) 
+       let newData=bag.filter((elem)=> elem.title.toLowerCase().includes(e.toLowerCase()))
+       displayCard(newData)
+    //    console.log(e) 
+    }
+function displayCard(data){
+    document.querySelector("#container").innerHTML=""
+    data.forEach(function(elem){
+    //   <div>  
+    //     <img/>
+    //     <h2>Title</h2>
+    //     <h3>desh3</h3>
+    //     <p>Price</p>
+    //     <p>Rating</p>
+    //   </div>
+    let div=document.createElement("div")
+
+    let imageProd=document.createElement("img")
+    imageProd.setAttribute("src",elem.image)
+    let title=document.createElement("h2")
+    title.innerText=elem.title
+    let des=document.createElement("h3")
+    des.innerText=elem.description
+
+
+
+    let cost=document.createElement("p")
+    cost.innerText=elem.price
+
+    let rating=document.createElement("p")
+    rating.innerText=elem.rating.rate;
+
+    div.append(imageProd,rating,title,des,cost,rating)
+    document.querySelector("#container").append(div)
+
+
+    })
+}
+
+
+</script>
